@@ -22,14 +22,14 @@ $nameReg = array();
 
 
 function insertRegion($rid, $name, $code, $lang='zh-TW', $adm1, $adm2, $adm3) {
-	Polygon::getDB();
+	$db = Polygon::getDB();
 	$sql = "replace into `odtw_region_names` value ('$rid', '$name', '$code', '$lang', '$adm1', '$adm2', '$adm3');";
 	echo $sql . "\n";
-	mysql_query($sql);
+	$db->query($sql);
 }
 
 function insertRegionCoordinates($rid, $pid, $points) {
-	Polygon::getDB();
+	$db = Polygon::getDB();
 	$rcdata = array();
 	foreach ($points as $weight => $p) {
 		$lat = $p[1];
@@ -39,7 +39,7 @@ function insertRegionCoordinates($rid, $pid, $points) {
 			$vstring = implode(",", $rcdata);
 			$sql = "replace into `odtw_region_coordinates` value $vstring;";
 			echo $sql . "\n";
-			mysql_query($sql);
+			$db->query($sql);
 			$rcdata = array();
 		}
 	}
@@ -47,7 +47,7 @@ function insertRegionCoordinates($rid, $pid, $points) {
 		$vstring = implode(",", $rcdata);
 		$sql = "replace into `odtw_region_coordinates` value $vstring;";
 		echo $sql . "\n";
-		mysql_query($sql);
+		$db->query($sql);
 		$rcdata = array();
 	}
 }

@@ -35,11 +35,9 @@ class Polygon {
 
 	static function dbConnect () {
 		$host="localhost";
-		$user="username";
-		$passwd="password";
-		Polygon::$db = mysql_connect($host, $user, $passwd) or die(mysql_error());
-		mysql_select_db("GeoGrids", Polygon::$db) or die(mysql_error());
-		mysql_query("set names 'utf8';");
+		$user="";
+		$passwd="";
+		Polygon::$db = new PDO("mysql:host=".$host.";dbname="."GeoGrids", $user, $passwd, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	}
 
 
@@ -55,10 +53,10 @@ class Polygon {
 		}
 		$sql = "select * from ".$prefix."region_coordinates where `rid`=$rid and `polygon_id`=$pid order by weight asc;";
 		$this->o("Query", $sql);
-		$res = mysql_query($sql);
+		$res = Polygon::$db->query($sql);
 		$ci = 0;
 		$prev = array();
-		while ($row = mysql_fetch_assoc($res)) {
+		while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
 			if (empty($prev)) {
 				$prev = array('x' => $row['longitude'], 'y' => $row['latitude']);
 			}
@@ -116,11 +114,10 @@ class Polygon {
 
 	function createBox ($useDB = true, $prefix='') {
 		if ($useDB) {
-			mysql_query("set names 'utf8';");
 			$sql = "select max(longitude) as maxx, min(longitude) as minx, max(latitude) as maxy, min(latitude) as miny from ".$prefix."region_coordinates where `rid`='".$this->rid."' and `polygon_id`='".$this->pid."';";
 			$this->o("Query", $sql);
-			$res = mysql_query($sql);
-			$row = mysql_fetch_assoc($res);
+			$res = Polygon::$db->query($sql);
+			$row = $res->fetch(PDO::FETCH_ASSOC);
 			$this->box['maxx'] = $this->_floorDec($row['maxx']) + 0.01;
 			$this->box['minx'] = $this->_floorDec($row['minx']) - 0.01;
 			$this->box['maxy'] = $this->_floorDec($row['maxy']) + 0.01;
@@ -149,7 +146,7 @@ class Polygon {
 	}
 
 	static function close () {
-		mysql_close(Polygon::$db);
+		Polygon::$db = null;
 	}
 
 	static function getDB () {

@@ -13,9 +13,9 @@ else {
 }
 
 $sql = "select distinct rid, polygon_id as pid from ".$prefix."region_coordinates order by rid asc, polygon_id asc;";
-$res = mysql_query($sql);
+$res = $db->query($sql);
 
-while ($row = mysql_fetch_assoc($res)) {
+while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
 	if ($row['rid'] < 7698) continue;
 	echo "進行到" . $row['rid'] . ", " . $row['pid'] . "\n";
 	$plg = new Polygon($row['rid'], $row['pid']);
@@ -27,7 +27,7 @@ while ($row = mysql_fetch_assoc($res)) {
 		foreach ($ykeys as $y => $in) {
 			if ($in['pog']) {
 				$sql = "insert into ".$prefix."polygon_over_grids set x='$x', y='$y', rid='".$row['rid']."', polygon_id='" . $row['pid'] . "';";
-				mysql_query($sql);
+				$db->query($sql);
 			}
 		}
 	}

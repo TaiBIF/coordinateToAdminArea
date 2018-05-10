@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(0);
+
 header('Access-Control-Allow-Origin: *');
 require_once "../lib/polygon.php";
 
@@ -38,23 +40,22 @@ $y = Polygon::floorDec(v(trim(@$_REQUEST['y']), $gy));
 $x = Polygon::floorDec(v($llx, $x));
 $y = Polygon::floorDec(v($lly, $y));
 
-
 function getGeoJSON ($rids) {
-	Polygon::getDB();
+	$db = Polygon::getDB();
 	$base['features'] = array();
 	$base['type'] = 'FeatureCollection';
 	$idx = 0;
 	foreach ($rids as $rid => $name) {
 		$sql = "select distinct * from odtw_region_coordinates where rid='$rid' order by polygon_id desc, weight asc";
 //		echo $sql;
-		$res = mysql_query($sql);
+		$res = $db->query($sql);
 		$base['features'][$idx]['type'] = 'Feature';
 		$base['features'][$idx]['properties']['rid'] = $rid;
 		$base['features'][$idx]['properties']['name'] = $name;
 		$first = true;
 		$multi = false;
 		$n = 0;
-		while ($row = mysql_fetch_assoc($res)) {
+		while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
 			if ($first) {
 				if ($row['polygon_id'] > 0) {
 					$multi = true;
@@ -100,13 +101,13 @@ if ($prefix == 'odtw_') {
 else {
 	$sql = "select distinct rn.rid, name, lang from ".$prefix."polygon_over_grids pog join ".$prefix."region_names rn on pog.rid=rn.rid where x in $xs and y in $ys;";
 }
-//echo $sql . "\n";
 
-$res = mysql_query($sql);
+$res = $db->query($sql);
+//var_dump($res->errorinfo());
 
 $rids = array();
 $ret = array();
-while ($row = @mysql_fetch_assoc($res)) {
+while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
 	$ret[$row['rid']]['full'][$row['lang']] = $row['name'];
 	$ret[$row['rid']]['adm1'][$row['lang']] = $row['adm1'];
 	$ret[$row['rid']]['adm2'][$row['lang']] = $row['adm2'];
