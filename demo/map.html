@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>坐標檢核</title>
+        <meta charset="UTF-8" />
+<style>
+
+#gquery {
+	position: absolute;
+	left: 1300px;
+	top: 0px;
+	margin-top: 10px;
+}
+
+
+#map {
+	width: 1280px;
+	height: 720px;
+}
+
+.vill-label-hide {
+	fill: red;
+	fill-opacity: 0;
+	font-size:1px;
+}
+
+
+text.vill-label-hide:hover {
+	fill: black!important;
+	fill-opacity: 1!important;
+	font-size:15px;
+}
+
+
+.vill-label-show {
+	fill: black!important;
+	fill-opacity: 1!important;
+	font-size:15px;
+}
+
+path.vill-region {
+	stroke: #f00;
+	stroke-width: 1.5px;
+	fill: blue;
+	fill-opacity: .2;
+}
+path:hover {
+	fill: red;
+	fill-opacity: .2;
+}
+</style>
+</head>
+<link rel="stylesheet" href="./js/leaflet.css">
+<script src="./js/jquery.min.js"></script>
+<script src="./js/leaflet-src.js"></script>
+<script src="./js/d3.v3.min.js" charset="utf-8"></script>
+<body>
+<div id="map"></div>
+
+<div class="ui-widget">
+  TaiBIF行政區: <input id="placename" size="30" readonly>
+  <button id="b2cat" onclick='b2cat()'>重設viewport</button>
+</div>
+
+<div class='reverse_geocode_results'>
+  OSM地點: <input id="osm_result" size="100" readonly><br/>
+  GMap地點: <input id="g_result" size="100" readonly><br/>
+  <div id='show_me_gmap'></div>
+</div>
+
+
+<div class="ui-widget" id="gquery">
+  GMap搜尋: <input id="gaddress" size="30" autofocus>
+  <button onclick=gAddress(gaddress.value)>GO</button>
+  <hr/>搜尋結果:<br/>
+  GMap坐標: <input id="gcoords" size="30" readonly><br/>
+  <div>
+  GMap地點:
+  <div id="gresult"></div>
+  </div>
+</div>
+
+<script src="leaflet.js" charset="UTF-8"></script>
+
+</body>
+</html>
