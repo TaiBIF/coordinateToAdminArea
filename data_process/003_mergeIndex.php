@@ -12,8 +12,7 @@ else {
 	$prefix = "odtw_";
 }
 
-$sql = "SELECT concat(cast(x as char),'_',cast(y as char)) as xy, count(distinct rid) as count_rid, rid from ".$prefix."polygon_over_grids where rid >= 7698
-	group by xy order by count_rid desc;";
+$sql = "SELECT concat(cast(x as char),'_',cast(y as char)) as xy, count(distinct rid) as count_rid, rid from ".$prefix."polygon_over_grids group by xy order by count_rid desc;";
 
 $res = $db->query($sql);
 

@@ -52,32 +52,9 @@ function insertRegionCoordinates($rid, $pid, $points) {
 	}
 }
 
-/*
- * 指定 rid 編碼起點
-$custom_rid = 7698;
-//*/
-
 
 foreach($jo->features as $rid => $f) {
 	$pr = $f->properties;
-
-
-	/*
-	 * 例外處理用
-	if (!in_array($pr->COUNTY, array("臺東縣", "澎湖縣", "金門縣", "連江縣"))) {
-		continue;
-	}
-	elseif (in_array($pr->COUNTY, array("臺東縣"))) {
-		if (!in_array($pr->TOWN, array("蘭嶼鄉", "綠島鄉"))) {
-			continue;
-		}
-	}
-	//*/
-
-	if (!empty($custom_rid)) {
-		$rid = $custom_rid;
-	}
-
 
 	$name = $pr->COUNTY . $pr->TOWN . $pr->VILLAGE;
 	$vcode = $pr->VILLCODE;
@@ -117,7 +94,7 @@ foreach($jo->features as $rid => $f) {
 			}
 		}
 	}
-	$custom_rid++;
+
 }
 
 Polygon::close();

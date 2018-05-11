@@ -16,7 +16,7 @@ $sql = "select distinct rid, polygon_id as pid from ".$prefix."region_coordinate
 $res = $db->query($sql);
 
 while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
-	if ($row['rid'] < 7698) continue;
+
 	echo "進行到" . $row['rid'] . ", " . $row['pid'] . "\n";
 	$plg = new Polygon($row['rid'], $row['pid']);
 	$plg->loadRegionPolygon(null, null, $prefix);
