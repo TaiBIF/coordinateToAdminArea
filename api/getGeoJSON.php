@@ -3,7 +3,7 @@
 error_reporting(0);
 
 header('Access-Control-Allow-Origin: *');
-require_once "../lib/polygon.php";
+require_once __DIR__ . "/../lib/polygon.php";
 
 function v ($val, $default) {
 	if (!empty($val)) {
@@ -129,7 +129,7 @@ else {
 	echo $json;
 }
 
-file_put_contents("rq_getgeojson.log", var_export($_REQUEST, true));
+file_put_contents(__DIR__ . "/log/rq_getgeojson.log", var_export($_REQUEST, true));
 Polygon::close();
 
 ?>

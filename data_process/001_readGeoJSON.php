@@ -1,6 +1,6 @@
 <?php
 
-require_once "../lib/polygon.php";
+require_once __DIR__ . "/../lib/polygon.php";
 $db = Polygon::getDB();
 
 if (!empty($argv[1])) {
@@ -13,7 +13,7 @@ else {
 	ini_set("memory_limit", "1000M");
 }
 
-$c = file_get_contents("../data/tw-2014-05.json");
+$c = file_get_contents(__DIR__ . "/../data/tw-2014-05.json");
 $jo = json_decode($c);
 
 #var_dump($jo);

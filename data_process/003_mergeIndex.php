@@ -1,6 +1,6 @@
 <?php
 
-require_once "../lib/polygon.php";
+require_once __DIR__ . "/../lib/polygon.php";
 
 $db = Polygon::getDB();
 
